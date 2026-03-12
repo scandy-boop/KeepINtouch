@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOREtime — Scuola Media Locarno 2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg:           #FBF6EF;
+            --card:         #FFFCF7;
+            --ink:          #251608;
+            --ink-mid:      #7A5C3E;
+            --ink-light:    #B8977A;
+            --accent:       #9B4F1F;
+            --accent-soft:  #F4E3D3;
+            --green:        #3D6B4A;
+            --green-soft:   #D8EDE0;
+            --border:       #EAD9C5;
+            --shadow-sm:    0 2px 10px rgba(37,22,8,0.07);
+            --shadow-md:    0 6px 28px rgba(37,22,8,0.12);
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background-image:
+                radial-gradient(ellipse at 15% 15%, rgba(155,79,31,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 85% 85%, rgba(61,107,74,0.08) 0%, transparent 50%);
+        }
+
+        .phone {
+            width: 100%;
+            max-width: 390px;
+            height: 810px;
+            background: var(--card);
+            border-radius: 2.75rem;
+            box-shadow: var(--shadow-md), 0 0 0 7px var(--ink);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* ─── HEADER ─── */
+        .app-header {
+            padding: 1.4rem 1.6rem 1rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .school-badge {
+            width: 40px; height: 40px;
+            background: var(--ink);
+            border-radius: 11px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .school-badge svg { width: 22px; height: 22px; }
+        .header-text h1 {
+            font-family: 'Lora', serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--ink);
+        }
+        .header-text p {
+            font-size: 0.6rem;
+            color: var(--ink-light);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 0.1rem;
+        }
+
+        /* ─── WELCOME ─── */
+        #step-welcome { flex: 1; display: flex; flex-direction: column; }
+        .welcome-body {
+            flex: 1; padding: 1.6rem;
+            display: flex; flex-direction: column;
+            justify-content: center; gap: 1.4rem;
+        }
+        .welcome-hero h2 {
+            font-family: 'Lora', serif;
+            font-size: 1.85rem; font-weight: 700;
+            color: var(--ink); line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+        .welcome-hero h2 em { font-style: normal; color: var(--accent); }
+        .welcome-hero p {
+            font-size: 0.85rem; color: var(--ink-mid);
+            line-height: 1.65; margin-top: 0.55rem;
+        }
+        .privacy-note {
+            display: flex; align-items: center; gap: 0.6rem;
+            padding: 0.7rem 0.9rem;
+            background: var(--green-soft);
+            border-radius: 0.75rem;
+            border: 1px solid rgba(61,107,74,0.18);
+        }
+        .privacy-note svg { width: 16px; height: 16px; flex-shrink: 0; }
+        .privacy-note p { font-size: 0.7rem; color: var(--green); font-weight: 700; line-height: 1.4; }
+        .input-label {
+            font-size: 0.65rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0.11em;
+            color: var(--ink-mid); margin-bottom: 0.4rem;
+        }
+        .name-input {
+            width: 100%; padding: 0.875rem 1rem;
+            background: var(--bg); border: 1.5px solid var(--border);
+            border-radius: 0.875rem;
+            font-family: 'Nunito', sans-serif; font-size: 0.9375rem;
+            font-weight: 600; color: var(--ink); outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .name-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(155,79,31,0.1); }
+        .name-input::placeholder { color: var(--ink-light); font-weight: 400; }
+        .btn-start {
+            width: 100%; padding: 1rem;
+            background: var(--accent); color: white;
+            font-family: 'Nunito', sans-serif; font-size: 0.875rem;
+            font-weight: 800; letter-spacing: 0.03em;
+            border: none; border-radius: 0.875rem; cursor: pointer;
+            transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+            box-shadow: 0 4px 18px rgba(155,79,31,0.28);
+            display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+        }
+        .btn-start:hover:not(:disabled) { background: #7E3A12; }
+        .btn-start:active:not(:disabled) { transform: scale(0.98); }
+        .btn-start:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
+        .loading-txt {
+            text-align: center; font-size: 0.62rem; font-weight: 700;
+            letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light);
+        }
+
+        /* ─── SWIPE ─── */
+        #step-swipe { flex: 1; display: flex; flex-direction: column; padding: 1.2rem 1.2rem 0.9rem; }
+        .swipe-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+        .progress-track { flex: 1; height: 3px; background: var(--border); border-radius: 99px; overflow: hidden; }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), #D4763A);
+            width: 0%; transition: width 0.4s cubic-bezier(.4,0,.2,1);
+        }
+        .progress-label {
+            font-size: 0.65rem; font-weight: 800; color: var(--ink-light);
+            text-transform: uppercase; letter-spacing: 0.08em;
+            white-space: nowrap;
+        }
+        #card-stack { flex: 1; position: relative; }
+
+        .hobby-card {
+            position: absolute; inset: 0;
+            border-radius: 1.75rem; overflow: hidden;
+            background: var(--ink);
+            display: flex; flex-direction: column; justify-content: flex-end;
+            padding: 1.75rem;
+        }
+        .card-grain {
+            position: absolute; inset: 0; opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-size: 180px;
+            pointer-events: none;
+        }
+        .card-glow {
+            position: absolute; top: -60px; right: -60px;
+            width: 240px; height: 240px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(212,118,58,0.18), transparent 70%);
+            pointer-events: none;
+        }
+        .card-icon-box {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -68%);
+            width: 88px; height: 88px;
+            border-radius: 22px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .card-icon-box svg { width: 44px; height: 44px; }
+        .card-cat {
+            font-size: 0.58rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0.14em;
+            color: #C4A07A; margin-bottom: 0.3rem;
+        }
+        .card-title {
+            font-family: 'Lora', serif; font-size: 1.5rem;
+            font-weight: 700; color: white;
+            letter-spacing: -0.01em; margin-bottom: 0.4rem;
+        }
+        .card-desc { font-size: 0.76rem; color: rgba(255,255,255,0.42); line-height: 1.5; }
+
+        .vote-row { display: flex; justify-content: center; gap: 2.25rem; padding: 1rem 0 0.25rem; }
+        .vote-col { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; }
+        .btn-vote {
+            width: 58px; height: 58px; border-radius: 50%;
+            border: 1.5px solid var(--border); background: white;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: transform 0.15s, box-shadow 0.2s; box-shadow: var(--shadow-sm);
+        }
+        .btn-vote svg { width: 22px; height: 22px; }
+        .btn-vote:hover { transform: scale(1.1); box-shadow: var(--shadow-md); }
+        .btn-vote:active { transform: scale(0.92); }
+        .btn-vote.yes { background: var(--green); border-color: var(--green); box-shadow: 0 4px 18px rgba(61,107,74,0.35); }
+        .vote-lbl { font-size: 0.58rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-light); }
+
+        /* ─── SUMMARY ─── */
+        #step-summary { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        .summary-head { padding: 1.35rem 1.6rem 0.9rem; border-bottom: 1px solid var(--border); }
+        .summary-head h2 {
+            font-family: 'Lora', serif; font-size: 1.3rem;
+            font-weight: 700; color: var(--ink);
+        }
+        .summary-head h2 em { font-style: normal; color: var(--accent); }
+        .summary-head p { font-size: 0.7rem; color: var(--ink-light); margin-top: 0.2rem; font-weight: 600; }
+        #match-list { flex: 1; overflow-y: auto; padding: 0.875rem 1rem; }
+        #match-list::-webkit-scrollbar { width: 3px; }
+        #match-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+
+        .colleague-card {
+            background: var(--bg); border-radius: 1rem;
+            padding: 0.875rem 1rem; margin-bottom: 0.6rem;
+            cursor: pointer; border: 1px solid var(--border);
+            transition: box-shadow 0.15s, transform 0.15s;
+        }
+        .colleague-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+        .colleague-row { display: flex; align-items: center; justify-content: space-between; }
+        .colleague-left { display: flex; align-items: center; gap: 0.75rem; }
+        .avatar {
+            width: 40px; height: 40px; border-radius: 10px;
+            background: var(--ink); color: white;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 0.9rem; flex-shrink: 0;
+            font-family: 'Lora', serif;
+        }
+        .colleague-name { font-weight: 700; font-size: 0.875rem; color: var(--ink); }
+        .colleague-sub { font-size: 0.62rem; color: var(--ink-light); font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; margin-top: 0.1rem; }
+        .score-badge {
+            background: var(--accent-soft); color: var(--accent);
+            font-family: 'Lora', serif; font-size: 0.875rem; font-weight: 700;
+            padding: 0.3rem 0.6rem; border-radius: 0.5rem; white-space: nowrap;
+        }
+        .hobby-detail { display: none; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border); }
+        .hobby-detail.open { display: flex; }
+        .tag { padding: 0.22rem 0.5rem; border-radius: 0.4rem; font-size: 0.63rem; font-weight: 700; }
+        .tag.common { background: var(--green-soft); color: var(--green); }
+        .tag.other { background: var(--border); color: var(--ink-light); }
+
+        .summary-footer { padding: 0.875rem 1rem; background: var(--bg); border-top: 1px solid var(--border); }
+        .btn-export {
+            width: 100%; padding: 0.875rem; background: var(--ink); color: white;
+            font-family: 'Nunito', sans-serif; font-size: 0.7rem; font-weight: 800;
+            letter-spacing: 0.1em; text-transform: uppercase;
+            border: none; border-radius: 0.875rem; cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+        }
+        .btn-export:hover { background: var(--accent); }
+        .btn-export:active { transform: scale(0.98); }
+        .empty-state { text-align: center; padding: 3rem 1rem; color: var(--ink-light); font-size: 0.85rem; }
+
+        .hidden { display: none !important; }
+        @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+        .animate-in { animation: fadeUp 0.3s ease forwards; }
+    </style>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, collection, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBPrNi0wYRCZzT052jRsYPQTBv05Ys_77A",
+            authDomain: "moretime-40590.firebaseapp.com",
+            projectId: "moretime-40590",
+            storageBucket: "moretime-40590.firebasestorage.app",
+            messagingSenderId: "241079149029",
+            appId: "1:241079149029:web:d8f02ad19777d1a9188f0c"
+        };
+
+        const APP_ID = 'moretime-ufficio';
+        let db, auth, currentUser, currentUserName = '';
+
+        async function bootstrap() {
+            try {
+                const app = initializeApp(firebaseConfig);
+                auth = getAuth(app); db = getFirestore(app);
+                await signInAnonymously(auth);
+                onAuthStateChanged(auth, u => {
+                    if (u) {
+                        currentUser = u; setupListeners();
+                        document.getElementById('start-btn').disabled = false;
+                        document.getElementById('loading-msg').classList.add('hidden');
+                    }
+                });
+            } catch(err) {
+                const el = document.getElementById('loading-msg');
+                el.textContent = 'Errore connessione.'; el.style.color = '#C0392B';
+            }
+        }
+
+        // SVG icons — clean line style, white stroke for card, dark for tags
+        const icons = {
+            hike:    `<svg viewBox="0 0 48 48" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 40 L20 16 L28 28 L34 20 L42 40"/><path d="M18 40 L24 28"/><circle cx="20" cy="10" r="3"/></svg>`,
+            food:    `<svg viewBox="0 0 48 48" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8 C12 8 10 20 16 24 C22 28 22 40 22 40"/><path d="M26 8 L26 18 C26 22 30 24 30 24 C30 24 34 22 34 18 L34 8"/><path d="M30 24 L30 40"/></svg>`,
+            sport:   `<svg viewBox="0 0 48 48" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="14"/><path d="M10 24 Q17 18 24 24 Q31 30 38 24"/><path d="M24 10 Q18 17 24 24 Q30 31 24 38"/></svg>`,
+            art:     `<svg viewBox="0 0 48 48" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="8" width="28" height="24" rx="2"/><path d="M10 36 L38 36"/><path d="M16 40 L32 40"/><path d="M18 20 L22 16 L30 24 L34 20"/><circle cx="20" cy="20" r="2.5"/></svg>`,
+            book:    `<svg viewBox="0 0 48 48" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 38 L10 10 C10 10 16 8 24 12 C32 8 38 10 38 10 L38 38 C38 38 32 36 24 40 C16 36 10 38 10 38Z"/><path d="M24 12 L24 40"/></svg>`,
+            music:   `<svg viewBox="0 0 48 48" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 36 L20 14 L38 10 L38 32"/><circle cx="16" cy="36" r="4"/><circle cx="34" cy="32" r="4"/></svg>`,
+            travel:  `<svg viewBox="0 0 48 48" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 32 L18 14 C20 10 28 10 30 14 L40 32"/><path d="M6 36 L42 36"/><path d="M14 36 L14 40 M34 36 L34 40"/><path d="M20 14 L20 32 M28 14 L28 32"/></svg>`,
+            garden:  `<svg viewBox="0 0 48 48" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 38 L24 22"/><path d="M24 22 C24 22 14 20 12 10 C20 10 26 16 24 22"/><path d="M24 26 C24 26 34 22 38 12 C30 10 22 18 24 26"/></svg>`,
+            cinema:  `<svg viewBox="0 0 48 48" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="12" width="24" height="20" rx="2"/><path d="M32 18 L40 14 L40 34 L32 30"/><circle cx="16" cy="38" r="2"/><circle cx="28" cy="38" r="2"/><path d="M12 40 L32 40"/></svg>`,
+            photo:   `<svg viewBox="0 0 48 48" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 16 L8 36 C8 37 9 38 10 38 L38 38 C39 38 40 37 40 36 L40 16 C40 15 39 14 38 14 L30 14 L28 10 L20 10 L18 14 L10 14 C9 14 8 15 8 16Z"/><circle cx="24" cy="26" r="7"/><circle cx="34" cy="18" r="2"/></svg>`,
+            sign:    `<svg viewBox="0 0 48 48" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="12" r="4"/><circle cx="32" cy="12" r="4"/><path d="M16 16 C16 22 12 26 12 32"/><path d="M32 16 C32 20 36 22 36 28 C36 32 32 34 32 34"/><path d="M20 20 C22 24 26 24 28 20"/><path d="M14 36 C18 34 22 36 24 38 C26 36 30 34 34 36"/></svg>`,
+            dance:   `<svg viewBox="0 0 48 48" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="9" r="4"/><path d="M24 13 L20 26 L14 34"/><path d="M20 26 L28 30 L34 24"/><path d="M20 26 L18 36 L14 40"/><path d="M20 26 L26 36 L24 42"/></svg>`,
+            paint:   `<svg viewBox="0 0 48 48" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 36 L30 14 C32 12 35 12 37 14 C39 16 39 19 37 21 L20 40 C18 42 12 42 12 36Z"/><path d="M28 16 L34 22"/><path d="M10 38 C10 38 8 44 14 44 C17 44 18 42 20 40"/></svg>`,
+            ceramic: `<svg viewBox="0 0 48 48" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10 C14 16 12 22 14 28 C16 36 20 40 24 40 C28 40 32 36 34 28 C36 22 34 16 32 10"/><path d="M14 10 L34 10"/><path d="M18 40 L30 40"/><path d="M20 10 C20 10 22 14 24 14 C26 14 28 10 28 10"/></svg>`,
+            honey:   `<svg viewBox="0 0 48 48" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 8 L32 14 L32 26 L24 32 L16 26 L16 14 Z"/><path d="M20 14 L24 8 L28 14"/><path d="M16 26 L24 32 L32 26"/><path d="M20 38 C20 38 22 42 24 42 C26 42 28 38 28 38 C30 40 28 44 24 44 C20 44 18 40 20 38Z"/><path d="M24 32 L24 38"/></svg>`,
+            mushroom:`<svg viewBox="0 0 48 48" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 26 C10 16 32 8 40 20 C42 24 40 28 36 28 L28 28 L28 38 C28 40 20 40 20 38 L20 28 L12 28 C10 28 8 28 10 26Z"/><path d="M18 28 L18 38 C18 40 30 40 30 38 L30 28"/></svg>`,
+            shop:    `<svg viewBox="0 0 48 48" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 18 L8 38 C8 39 9 40 10 40 L38 40 C39 40 40 39 40 38 L38 18 Z"/><path d="M16 18 C16 12 20 8 24 8 C28 8 32 12 32 18"/><path d="M10 18 L38 18"/><path d="M20 28 C20 31 28 31 28 28"/></svg>`,
+            hunt:    `<svg viewBox="0 0 48 48" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 40 L32 16"/><path d="M28 12 L36 12 L36 20"/><path d="M32 16 L38 10"/><path d="M14 40 L8 40 L8 34"/><circle cx="24" cy="24" r="3"/><path d="M24 8 L24 14 M24 34 L24 40 M8 24 L14 24 M34 24 L40 24"/></svg>`,
+        };
+
+        const hobbyDeck = [
+            { id:  1, title: "Escursionismo",      desc: "Sentieri, vette e aria di montagna.",       cat: "Natura",      key: "hike"     },
+            { id:  2, title: "Cucina & Convivio",   desc: "Il piacere della tavola condivisa.",        cat: "Sociale",     key: "food"     },
+            { id:  3, title: "Sport di squadra",    desc: "Calcio, pallavolo, padel e dintorni.",      cat: "Sport",       key: "sport"    },
+            { id:  4, title: "Arte & Musei",        desc: "Mostre, gallerie, cultura visiva.",         cat: "Cultura",     key: "art"      },
+            { id:  5, title: "Lettura",             desc: "Romanzi, saggi, narrativa e poesia.",       cat: "Cultura",     key: "book"     },
+            { id:  6, title: "Musica",              desc: "Concerti, strumenti, playlist curate.",     cat: "Arte",        key: "music"    },
+            { id:  7, title: "Viaggi",              desc: "Esplorare nuovi luoghi ogni stagione.",     cat: "Avventura",   key: "travel"   },
+            { id:  8, title: "Natura & Giardino",   desc: "Orti, parchi, passeggiate in verde.",       cat: "Natura",      key: "garden"   },
+            { id:  9, title: "Cinema & Teatro",     desc: "Film d'autore e spettacoli dal vivo.",      cat: "Cultura",     key: "cinema"   },
+            { id: 10, title: "Fotografia",          desc: "Catturare istanti e raccontare storie.",    cat: "Arte",        key: "photo"    },
+            { id: 11, title: "Lingua dei Segni",    desc: "Imparare a comunicare con le mani.",        cat: "Formazione",  key: "sign"     },
+            { id: 12, title: "Balli Latini",        desc: "Salsa, bachata, tango e ritmo.",            cat: "Sport",       key: "dance"    },
+            { id: 13, title: "Pittura",             desc: "Acquerello, olio, acrilico e creatività.",  cat: "Arte",        key: "paint"    },
+            { id: 14, title: "Ceramica",            desc: "Modellare l'argilla con le mani.",          cat: "Arte",        key: "ceramic"  },
+            { id: 15, title: "Apicoltura & Miele",  desc: "Il mondo delle api e i loro prodotti.",     cat: "Natura",      key: "honey"    },
+            { id: 16, title: "Funghi & Bosco",      desc: "Raccolta e conoscenza dei funghi.",         cat: "Natura",      key: "mushroom" },
+            { id: 17, title: "Shopping",            desc: "Mercatini, boutique e nuove scoperte.",     cat: "Sociale",     key: "shop"     },
+            { id: 18, title: "Caccia",              desc: "Tradizione, natura e vita all'aperto.",     cat: "Natura",      key: "hunt"     },
+        ];
+
+        const TOTAL = hobbyDeck.length;
+        let allUsersData = [], myLikes = [], currentIndex = 0;
+
+        function setupListeners() {
+            const col = collection(db, 'artifacts', APP_ID, 'public', 'data', 'users');
+            onSnapshot(col, snap => {
+                allUsersData = snap.docs.map(d => ({ uid: d.id, ...d.data() }));
+                if (!document.getElementById('step-summary').classList.contains('hidden')) renderMatches();
+            });
+        }
+
+        function showStep(id) {
+            ['step-welcome','step-swipe','step-summary'].forEach(s =>
+                document.getElementById(s).classList.add('hidden'));
+            const el = document.getElementById(id);
+            el.classList.remove('hidden');
+            el.classList.add('animate-in');
+            setTimeout(() => el.classList.remove('animate-in'), 350);
+        }
+
+        window.startApp = () => {
+            const name = document.getElementById('user-name').value.trim();
+            if (!name || !currentUser) return;
+            currentUserName = name;
+            showStep('step-swipe');
+            renderCard();
+        };
+
+        function renderCard() {
+            if (currentIndex >= TOTAL) { finishSwiping(); return; }
+            const h = hobbyDeck[currentIndex];
+            document.getElementById('progress-fill').style.width = `${(currentIndex / TOTAL) * 100}%`;
+            document.getElementById('progress-label').textContent = `${currentIndex + 1} / ${TOTAL}`;
+            document.getElementById('card-stack').innerHTML = `
+                <div class="hobby-card animate-in">
+                    <div class="card-grain"></div>
+                    <div class="card-glow"></div>
+                    <div class="card-icon-box">${icons[h.key]}</div>
+                    <div class="card-cat">${h.cat}</div>
+                    <div class="card-title">${h.title}</div>
+                    <div class="card-desc">${h.desc}</div>
+                </div>`;
+        }
+
+        window.vote = liked => {
+            if (liked) myLikes.push(hobbyDeck[currentIndex].id);
+            currentIndex++;
+            renderCard();
+        };
+
+        async function finishSwiping() {
+            showStep('step-summary');
+            document.getElementById('user-display-name').textContent = currentUserName;
+            try {
+                await setDoc(doc(db, 'artifacts', APP_ID, 'public', 'data', 'users', currentUser.uid), {
+                    name: currentUserName, likes: myLikes, timestamp: serverTimestamp()
+                });
+            } catch(e) { console.error(e); }
+            renderMatches();
+        }
+
+        function renderMatches() {
+            const list = document.getElementById('match-list');
+            list.innerHTML = '';
+            const others = allUsersData.filter(u => u.uid !== currentUser?.uid);
+            if (others.length === 0) {
+                list.innerHTML = `<div class="empty-state">In attesa dei colleghi…</div>`;
+                return;
+            }
+            [...others].sort((a,b) => {
+                const aC = (a.likes||[]).filter(id => myLikes.includes(id)).length;
+                const bC = (b.likes||[]).filter(id => myLikes.includes(id)).length;
+                return bC - aC;
+            }).forEach(other => {
+                const common = (other.likes||[]).filter(id => myLikes.includes(id));
+                const card = document.createElement('div');
+                card.className = 'colleague-card';
+                card.onclick = () => card.querySelector('.hobby-detail').classList.toggle('open');
+                card.innerHTML = `
+                    <div class="colleague-row">
+                        <div class="colleague-left">
+                            <div class="avatar">${other.name ? other.name[0].toUpperCase() : '?'}</div>
+                            <div>
+                                <div class="colleague-name">${other.name || 'Collega'}</div>
+                                <div class="colleague-sub">${common.length} interest${common.length===1?'e':'i'} in comune</div>
+                            </div>
+                        </div>
+                        <div class="score-badge">${common.length} / ${TOTAL}</div>
+                    </div>
+                    <div class="hobby-detail">
+                        ${(other.likes||[]).map(id => {
+                            const h = hobbyDeck.find(x => x.id === id);
+                            if (!h) return '';
+                            return `<span class="tag ${myLikes.includes(id)?'common':'other'}">${h.title}</span>`;
+                        }).join('')}
+                    </div>`;
+                list.appendChild(card);
+            });
+        }
+
+        window.copyDataForAI = async () => {
+            let r = `REPORT INTERESSI — Scuola Media Locarno 2\n${'─'.repeat(42)}\n\n`;
+            allUsersData.forEach(u => {
+                const l = (u.likes||[]).map(id => hobbyDeck.find(h=>h.id===id)?.title).filter(Boolean);
+                r += `${(u.name||'Anonimo').toUpperCase()}\n  ${l.join(' · ')||'—'}\n\n`;
+            });
+            const btn = document.getElementById('ai-btn');
+            try { await navigator.clipboard.writeText(r); }
+            catch {
+                const el = Object.assign(document.createElement('textarea'),{value:r});
+                Object.assign(el.style,{position:'fixed',opacity:'0'});
+                document.body.appendChild(el); el.select();
+                document.execCommand('copy'); document.body.removeChild(el);
+            }
+            btn.textContent = '✓ Copiato negli appunti';
+            setTimeout(() => btn.textContent = 'Esporta dati del gruppo', 2000);
+        };
+
+        window.onload = bootstrap;
+    </script>
+</head>
+<body>
+<div class="phone">
+
+    <!-- WELCOME -->
+    <div id="step-welcome" style="display:flex;flex:1;flex-direction:column;">
+        <div class="app-header">
+            <div class="school-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+                </svg>
+            </div>
+            <div class="header-text">
+                <h1>Scuola Media Locarno 2</h1>
+                <p>MOREtime — Connessioni tra colleghi</p>
+            </div>
+        </div>
+        <div class="welcome-body">
+            <div class="welcome-hero">
+                <h2>Condividi interessi con i tuoi <em>colleghi</em>.</h2>
+                <p>18 interessi, pochi secondi. Scopri chi nel team condivide le tue passioni.</p>
+            </div>
+            <div class="privacy-note">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#3D6B4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+                </svg>
+                <p>Solo per uso interno. Nessuna registrazione richiesta.</p>
+            </div>
+            <div>
+                <div class="input-label">Il tuo nome</div>
+                <input type="text" id="user-name" class="name-input" placeholder="Es. Stefania Rossi"
+                    onkeydown="if(event.key==='Enter') startApp()">
+            </div>
+            <button id="start-btn" class="btn-start" disabled onclick="startApp()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                Inizia il questionario
+            </button>
+            <p id="loading-msg" class="loading-txt">Connessione in corso…</p>
+        </div>
+    </div>
+
+    <!-- SWIPE -->
+    <div id="step-swipe" class="hidden" style="flex:1;display:flex;flex-direction:column;padding:1.2rem 1.2rem 0.9rem;">
+        <div class="swipe-header">
+            <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+            <span class="progress-label" id="progress-label">1 / 18</span>
+        </div>
+        <div id="card-stack" style="flex:1;position:relative;"></div>
+        <div class="vote-row">
+            <div class="vote-col">
+                <button class="btn-vote" onclick="vote(false)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#B8977A" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                </button>
+                <span class="vote-lbl">Non mi interessa</span>
+            </div>
+            <div class="vote-col">
+                <button class="btn-vote yes" onclick="vote(true)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+                </button>
+                <span class="vote-lbl">Mi interessa</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUMMARY -->
+    <div id="step-summary" class="hidden" style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
+        <div class="summary-head">
+            <h2>Ciao, <em id="user-display-name"></em> 👋</h2>
+            <p>Colleghi con interessi in comune — tocca per espandere</p>
+        </div>
+        <div id="match-list"></div>
+        <div class="summary-footer">
+            <button id="ai-btn" class="btn-export" onclick="copyDataForAI()">Esporta dati del gruppo</button>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
